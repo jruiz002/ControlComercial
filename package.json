@@ -1,0 +1,32 @@
+{
+  "name": "controlcomercial",
+  "version": "1.0.0",
+  "description": "proyecto final",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jruiz002/ControlComercial.git"
+  },
+  "author": "daniel juarez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jruiz002/ControlComercial/issues"
+  },
+  "homepage": "https://github.com/jruiz002/ControlComercial#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.29.4",
+    "mongoose": "^7.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
