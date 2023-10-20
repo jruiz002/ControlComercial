@@ -1,22 +1,100 @@
 "use strict"
 
 const Owner = require("../models/OwnerModel")
+const User = require("../models/UserModel")
+const Worker = require("../models/WorkerModel")
+const {dataObligatory, encryptPassword, dencryptPassword} = require("../utils/validate");
 
-exports.testAdminController = (req, res)=>{
-    return res.send({message: 'The function test owner controller is running.'})
+// Función para poder logearse en la aplicacion
+exports.login = async (req, res) => {
+    try {
+        const body = req.body;
+        const data = {
+            username: body.username.toUpperCase(),
+            password: body.password
+        }
+        const msg = await dataObligatory(data); 
+        if (msg) return res.status(400).send(msg);
+        const userFound = await User.findOne({username: data.username})
+        if (userFound && await dencryptPassword(data.password, userFound.password)){
+            return res.status(200).send({message: 'Entrando al sistema...'});
+        } else {
+            return res.status(404).send({message: 'Credenciales incorrectas'});
+        }
+    } catch (error) {
+        console.log(error)
+        return error; 
+    }
 }
 
-exports.saveOwner = async (req, res) => {
-    const nuevoOwner = {
-        username: "John",
-        password: "123",
-        phone: "12345678",
-        role: "Dueño",
-        suppliers: ["Proveedor1", "Proveedor2"],
+// Función para registrarse en la app como un dueño
+exports.register = async (req, res) => {
+    try {
+        // Variables del método
+        const body = req.body;
+        const data = {
+            username: body.username.toUpperCase(),
+            password: body.password,
+            phone: body.phone,
+            role: "Dueño",
+            suppliers: [],
+        }
+    
+        // Parámetros requeridos
+        const msg = await dataObligatory(data);
+    
+        // Validaciones para guardar el owner
+        if (msg) return res.status(400).send(msg);
+       
+        // Se busca si ya existe un dueñi con ese username
+        let ownerFound = await User.findOne({username: data.username});
+        if (ownerFound) return res.status(400).send({message: 'Este nombre de dueño ya existe.'});
+        
+        // Se crea la instancia de tipo Owner
+        const owner = new Owner(data) 
+        owner.password = await encryptPassword(data.password)
+        await owner.save();
+        return res.status(200).send({message: 'Dueño creado exitosamente.'});
+        
+    } catch (error) {
+        console.log(error)
+        return error;
     }
+}
 
-    const owner = new Owner(nuevoOwner)
-    await owner.save();
-    return res.status(200).send({message: 'Owner created successfully.'});
+// Función para crear un trabajador siendo un Dueño REVISAR
+exports.addWorker = async (req, res) => {
+    try {
+        // Variables del método
+        const body = req.body;
+        const params = req.params;
+        const data = {
+            username: body.username.toUpperCase(),
+            password: body.password,
+            phone: body.phone,
+            role: "Trabajador",
+            salario: body.salario,
+            idSede: params.idSede
+        }
+    
+        // Parámetros requeridos
+        const msg = await dataObligatory(data);
+       
+        // Validaciones para guardar el owner
+        if (msg) return res.status(400).send(msg);
 
+        // Se busca si ya existe un trabajador con ese username
+        let workerFound = await User.findOne({username: data.username});
+        if (workerFound) return res.status(400).send({message: 'Este nombre de trabajador ya existe.'});
+
+        // Se crea la instancia de tipo Owner
+        const worker = new Worker(data) 
+        worker.password = await encryptPassword(data.password)
+        await worker.save();
+        return res.status(200).send({message: 'Trabajador creado exitosamente.'});
+    
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
 }

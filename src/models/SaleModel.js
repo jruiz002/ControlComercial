@@ -4,9 +4,10 @@ const mongoose = require("mongoose");
 
 const saleSchema = mongoose.Schema({
     saleDate: Date,
-    idProduct: {type: mongoose.Schema.ObjectId, ref:'Product'},
     amount: Number,
-    total: Number
+    total: Number,
+    idProduct: {type: mongoose.Schema.ObjectId, ref:'Product'},
+    idCampus: {type: mongoose.Schema.ObjectId, ref:'Campus'}
 })
 
 module.exports = mongoose.model("Sale", saleSchema);
