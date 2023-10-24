@@ -3,6 +3,7 @@
 const Owner = require("../models/OwnerModel")
 const User = require("../models/UserModel")
 const Worker = require("../models/WorkerModel")
+const {createToken} = require("../../Services/jwt")
 const {dataObligatory, encryptPassword, dencryptPassword} = require("../utils/validate");
 
 // Función para poder logearse en la aplicacion
@@ -17,7 +18,8 @@ exports.login = async (req, res) => {
         if (msg) return res.status(400).send(msg);
         const userFound = await User.findOne({username: data.username})
         if (userFound && await dencryptPassword(data.password, userFound.password)){
-            return res.status(200).send({message: 'Entrando al sistema...'});
+            const token = await createToken(userFound)
+            return res.status(200).send({token, userFound, message: 'Entrando al sistema...'});
         } else {
             return res.status(404).send({message: 'Credenciales incorrectas'});
         }

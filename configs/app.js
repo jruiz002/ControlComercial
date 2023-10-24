@@ -7,6 +7,7 @@ const cors = require("cors");
 const ownerRoutes = require("../src/Routes/OwnerRoutes")
 const productRoutes = require("../src/Routes/ProductRoutes")
 const campusRoutes = require("../src/Routes/CampusRoutes")
+const saleRoutes = require("../src/Routes/SaleRoutes")
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use("/owner", ownerRoutes)
 app.use("/product", productRoutes)
 app.use("/campus", campusRoutes)
+app.use("/sale", saleRoutes)
 
 
 module.exports = app;
