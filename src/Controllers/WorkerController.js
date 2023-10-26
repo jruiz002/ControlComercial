@@ -58,3 +58,16 @@ exports.workers = async(req, res) =>{
         return error;
     }
 }
+
+//Función parav ver el perfil de la persona logeada (Worker)
+exports.verPerfil = async(req, res)=>{
+    try {
+        const idWorker = req.params.idWorker;
+        const worker = await Worker.findOne({_id: idWorker});
+        return res.status(200).send({worker});
+
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
+}

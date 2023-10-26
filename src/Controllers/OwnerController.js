@@ -131,4 +131,20 @@ exports.editProfile = async(req, res)=>{
         console.log(error)
         return error;
     }
+
+
+}
+
+//Función parav ver el perfil de la persona logeada (Dueño)
+exports.verPerfil = async(req, res)=>{
+    try {
+        const idOwner = req.params.idOwner;
+        const owner = await Owner.findOne({_id: idOwner});
+        return res.status(200).send({owner});
+
+
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
 }

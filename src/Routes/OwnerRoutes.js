@@ -9,5 +9,6 @@ api.post("/register", ownerController.register)
 api.post("/addWorker/:idSede", [isLoged, isOwner], ownerController.addWorker)
 api.post("/login", ownerController.login)
 api.put("/editProfile/:idOwner", [isLoged, isOwner], ownerController.editProfile)
+api.get("/verPerfil/:idOwner", [isLoged], ownerController.verPerfil) 
 
 module.exports = api;
