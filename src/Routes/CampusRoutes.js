@@ -2,11 +2,12 @@
 
 const express = require('express');
 const api = express.Router();
+const {isLoged, isOwner, isWorker} = require("../../Services/middleware")
 const controllerCampus = require("../Controllers/CampusController")
 
-api.post("/agregarSede/:id", controllerCampus.agregarSede)
-api.get("/verSedes/:idOwner", controllerCampus.verSedes)
-api.get("/verSede/:nameSede", controllerCampus.verSede)
-api.put("/editarSede/:idSede", controllerCampus.editarSede)
+api.post("/agregarSede/:id", [isLoged, isOwner], controllerCampus.agregarSede)
+api.get("/verSedes/:idOwner", [isLoged, isOwner], controllerCampus.verSedes)
+api.get("/verSede/:nameSede", [isLoged],controllerCampus.verSede)
+api.put("/editarSede/:idSede", [isLoged, isOwner], controllerCampus.editarSede)
 
 module.exports = api;

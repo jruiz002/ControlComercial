@@ -75,7 +75,7 @@ exports.addWorker = async (req, res) => {
             password: body.password,
             phone: body.phone,
             role: "Trabajador",
-            salario: body.salario,
+            salary: body.salary,
             idSede: params.idSede
         }
     
@@ -95,6 +95,38 @@ exports.addWorker = async (req, res) => {
         await worker.save();
         return res.status(200).send({message: 'Trabajador creado exitosamente.'});
     
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
+}
+
+//Funcion para editar perfil dueño
+
+exports.editProfile = async(req, res)=>{
+    try {
+        const idOwner = req.params.idOwner;
+        const body = req.body;
+        const data = {
+            username: body.username.toUpperCase(), 
+            phone: body.phone,
+        }
+
+        // Buscar el perfil
+        let findOwner = await Owner.findOne({_id: idOwner});
+
+        if (!findOwner) return res.status(404).send({ message: 'No se encontro el perfil' });
+        
+        // Verificar los datos
+        if (data.username == findOwner.username) {
+            const updateOwner = await Owner.findOneAndUpdate({ _id: idOwner }, data, {new: true});
+            return res.status(200).send({message: 'Perfil Actualizado: ', updateOwner});
+        }else{
+            const owner = await Owner.findOne({username: data.username.toUpperCase()})
+            if (owner) return res.status(400).send({message: 'Ese nombre ya se encuentra en uso.'});
+            const updateOwner = await Owner.findOneAndUpdate({_id: idOwner}, data, {new: true});
+            return res.status(200).send({message: 'Perfil Actualizado: ', updateOwner});
+        }
     } catch (error) {
         console.log(error)
         return error;
