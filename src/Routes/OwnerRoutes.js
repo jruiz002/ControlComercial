@@ -10,5 +10,7 @@ api.post("/addWorker/:idSede", [isLoged, isOwner], ownerController.addWorker)
 api.post("/login", ownerController.login)
 api.put("/editProfile/:idOwner", [isLoged, isOwner], ownerController.editProfile)
 api.get("/verPerfil/:idOwner", [isLoged], ownerController.verPerfil) 
+api.post("/agregarProveedor/:idOwner", [isLoged, isOwner], ownerController.agregarProveedor)
+api.get("/verProveedores/:idOwner", ownerController.verProveedores)
 
 module.exports = api;

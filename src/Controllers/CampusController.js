@@ -1,5 +1,7 @@
 "use strict"
 
+const Sale = require("../models/SaleModel")
+const Product = require("../models/ProductModel")
 const Campus = require("../models/CampusModel")
 const {dataObligatory} = require("../utils/validate")
 
@@ -22,7 +24,7 @@ exports.agregarSede = async (req, res) => {
         if (msg) return res.status(400).send(msg);
 
         //Se busca en la coleccion si ya existe una sede con ese nombre
-        let campusFound = await Campus.findOne({name: data.name});
+        let campusFound = await Campus.findOne({name: data.name, idOwner: data.idOwner});
         if (campusFound) return res.status(400).send({message: 'El nombre de esta sede ya existe.'});
 
         // Se crea la instancia de tipo Campus
@@ -86,3 +88,29 @@ exports.editarSede = async (req, res) => {
         return error;
     }
 }
+
+// Función para eliminar una sede
+exports.eliminarSede = async (req, res) => {
+    try {
+        const idSede = req.params.idSede;
+        /*
+            Para eliminar una sede se necesita lo siguiente:
+            1. Eliminar todas las ventas asociadas a la sede
+            2. Eliminar todos los productos a la sede
+            3. Eliminar la sede 
+        */ 
+
+        // Eliminar todas las ventas asociadas a la sede
+        const salesDeleted =  await Sale.deleteMany({idCampus: idSede});
+        // Eliminar los productos de la sede
+        const productDeleted = await Product.deleteMany({idCampus: idSede})
+        // Eliminar la sede
+        const campusDeleted = await Campus.findOneAndDelete({_id: idSede})
+
+        return res.status(200).send({message: "Sede eliminada"})
+
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
+} 

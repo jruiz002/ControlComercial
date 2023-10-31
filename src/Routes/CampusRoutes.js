@@ -7,7 +7,8 @@ const controllerCampus = require("../Controllers/CampusController")
 
 api.post("/agregarSede/:id", [isLoged, isOwner], controllerCampus.agregarSede)
 api.get("/verSedes/:idOwner", [isLoged, isOwner], controllerCampus.verSedes)
-api.get("/verSede/:nameSede", [isLoged],controllerCampus.verSede)
+api.get("/verSede/:nameSede", [isLoged], controllerCampus.verSede)
 api.put("/editarSede/:idSede", [isLoged, isOwner], controllerCampus.editarSede)
+api.delete("/eliminarSede/:idSede", [isLoged, isOwner], controllerCampus.eliminarSede)
 
 module.exports = api;

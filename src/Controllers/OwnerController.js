@@ -142,9 +142,45 @@ exports.verPerfil = async(req, res)=>{
         const owner = await Owner.findOne({_id: idOwner});
         return res.status(200).send({owner});
 
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
+}
+
+// Función para agregar proveedores a un dueño
+exports.agregarProveedor = async (req, res) => {
+    try {
+        const body = req.body;
+        const idOwner = req.params.idOwner;
+
+        const data = {
+            suppliers: body.suppliers
+        }
+        const msg = await dataObligatory(data);
+        if (msg) return res.status(400).send(msg);
+
+        const owner = await Owner.findOne({_id: idOwner})
+        owner.suppliers.push(data.suppliers);
+        await owner.save();
+        return res.status(200).send({message: 'Proveedor agregado '});
 
     } catch (error) {
         console.log(error)
         return error;
+    }
+}
+
+// Funcion para ver los proveedores de un dueño
+exports.verProveedores = async (req, res) => {
+    try {
+        const idOwner = req.params.idOwner;
+        const owner = await Owner.findOne({_id: idOwner})
+        const suppliers = owner.suppliers;
+        return res.status(200).send({suppliers});
+
+    } catch (error) {
+        console.log(error)
+        return error;        
     }
 }
