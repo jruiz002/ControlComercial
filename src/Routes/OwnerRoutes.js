@@ -12,5 +12,6 @@ api.put("/editProfile/:idOwner", [isLoged, isOwner], ownerController.editProfile
 api.get("/verPerfil/:idOwner", [isLoged], ownerController.verPerfil) 
 api.post("/agregarProveedor/:idOwner", [isLoged, isOwner], ownerController.agregarProveedor)
 api.get("/verProveedores/:idOwner", ownerController.verProveedores)
+api.get("/buscarOwner/:idOwner", [isLoged, isOwner], ownerController.buscarOwner)
 
 module.exports = api;

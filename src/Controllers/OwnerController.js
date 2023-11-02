@@ -184,3 +184,15 @@ exports.verProveedores = async (req, res) => {
         return error;        
     }
 }
+
+// Funcion para buscar el owner a editar
+exports.buscarOwner = async (req, res) => {
+    try {
+        const idOwner = req.params.idOwner;
+        const owner = await Owner.findOne({_id: idOwner})
+        return res.status(200).send({owner})
+    } catch (error) {
+        console.log(error)
+        return error;         
+    }
+}
