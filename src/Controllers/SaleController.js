@@ -65,7 +65,7 @@ exports.verVentas = async (req, res) => {
         const idCampus = req.params.idCampus
         const sales = await Sale.find({idCampus: idCampus}).populate("idProduct").populate("idCampus")
         if (!sales) return res.status(400).send({message: 'No se han realizado ventas en esta sede.'});
-        return res.status(200).send(sales);
+        return res.status(200).send({sales});
     } catch (error) {
         console.log(error)
         return error;

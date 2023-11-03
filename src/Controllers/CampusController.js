@@ -67,15 +67,16 @@ exports.editarSede = async (req, res) => {
     try {
         // Variables del método
         const idSede = req.params.idSede;
+        const idOwner = req.params.idOwner;
         const body = req.body;
         const data = {
             name: body.name.toUpperCase()
         }
 
-        let sedeFound = await Campus.findOne({_id: idSede})
+        let sedeFound = await Campus.findOne({_id: idSede, idOwner: idOwner})
 
         if (sedeFound.name != data.name){
-            const sede= await Campus.findOne({name: data.name})
+            const sede= await Campus.findOne({name: data.name, idOwner: idOwner})
             if (sede) return res.status(400).send({message: 'Este nombre de sede ya existe.'});
             const sedeUpdated = await Campus.findOneAndUpdate({_id: idSede}, data, {new: true})
             return res.status(200).send({message: 'Sede Actualizado'});
