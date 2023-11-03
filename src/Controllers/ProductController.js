@@ -68,7 +68,7 @@ exports.editarProducto = async (req, res) => {
 exports.eliminarProducto = async (req, res) => {
     try {
         const idProducto = req.params.idProducto;
-        const saleDeleted = await Sale.findOneAndDelete({idProduct: idProducto})
+        const saleDeleted = await Sale.deleteMany({idProduct: idProducto})
         const productDelet = await Product.findOneAndDelete({_id: idProducto});
         return res.status(200).send({message: "Produto Eliminado exitosamente", productDelet});
         
